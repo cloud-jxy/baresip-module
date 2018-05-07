@@ -66,8 +66,27 @@ void vidframe_init(struct vidframe *vf, enum vidfmt fmt,
 	vf->fmt = fmt;
 }
 
+void vidframe_init_buf_h264(struct vidframe *vf, enum vidfmt fmt,
+					   const struct vidsz *sz, uint8_t *buf, int len) {
+	unsigned w, h;
 
-/**
+	if (!vf || !sz || !buf)
+		return;
+
+	w = (sz->w + 1) >> 1;
+	h = (sz->h + 1) >> 1;
+
+	memset(vf->linesize, 0, sizeof(vf->linesize));
+	memset(vf->data, 0, sizeof(vf->data));
+
+	vf->data[0] = buf;
+	vf->linesize[0] = len;
+
+	vf->size = *sz;
+	vf->fmt = fmt;
+}
+
+	/**
  * Initialize a video frame from a buffer
  *
  * @param vf  Video frame
@@ -76,7 +95,7 @@ void vidframe_init(struct vidframe *vf, enum vidfmt fmt,
  * @param buf Frame buffer
  */
 void vidframe_init_buf(struct vidframe *vf, enum vidfmt fmt,
-		       const struct vidsz *sz, uint8_t *buf)
+						   const struct vidsz *sz, uint8_t *buf)
 {
 	unsigned w, h;
 
