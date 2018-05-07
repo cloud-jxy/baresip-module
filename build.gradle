@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                arguments = ['-DANDROID_TOOLCHAIN=clang', '-DANDROID_STL=c++_shared']
+                cppFlags '-std=c++11 -fno-rtti'
+            }
+        }
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+dependencies {
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.artemzin.rxjava:proguard-rules:1.2.3.0'
+}
